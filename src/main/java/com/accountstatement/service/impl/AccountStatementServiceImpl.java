@@ -17,6 +17,7 @@ public class AccountStatementServiceImpl implements AccountStatementService {
     private final NotificationService notificationService;
     private final FileUtils fileUtils;
     private final DateConverter dateConverter;
+    private
 
     public AccountStatementServiceImpl(@Qualifier("email") NotificationService notificationService, FileUtils fileUtils, DateConverter dateConverter) {
         this.notificationService = notificationService;
@@ -25,13 +26,14 @@ public class AccountStatementServiceImpl implements AccountStatementService {
     }
 
     @Override
-    public void getAccountStatement(String email, String startDate, String endDate) {
+    public byte[] getAccountStatement(String email, String startDate, String endDate) {
         List<AccountStatement> accountStatements = fileUtils.readCsvFile();
         List<AccountStatement> response = accountStatements.stream()
                 .filter((accountStatement) -> accountStatement.getTransactionDate().isEqual(dateConverter.convertToDate(startDate)) ||
                         accountStatement.getTransactionDate().isAfter(dateConverter.convertToDate(startDate)) &&
                                 accountStatement.getTransactionDate().isEqual(dateConverter.convertToDate(endDate)) ||
                         accountStatement.getTransactionDate().isBefore(dateConverter.convertToDate(endDate))).toList();
+
 
 
     }
